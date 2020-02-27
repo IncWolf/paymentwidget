@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.js": "/paymentwidget/static/js/main.b27e53d5.chunk.js",
+    "main.js.map": "/paymentwidget/static/js/main.b27e53d5.chunk.js.map",
+    "runtime-main.js": "/paymentwidget/static/js/runtime-main.4e9eb98e.js",
+    "runtime-main.js.map": "/paymentwidget/static/js/runtime-main.4e9eb98e.js.map",
+    "static/js/2.d4a562b3.chunk.js": "/paymentwidget/static/js/2.d4a562b3.chunk.js",
+    "static/js/2.d4a562b3.chunk.js.map": "/paymentwidget/static/js/2.d4a562b3.chunk.js.map",
+    "index.html": "/paymentwidget/index.html",
+    "precache-manifest.f559598b211e6770ab50ae6c5c019d2d.js": "/paymentwidget/precache-manifest.f559598b211e6770ab50ae6c5c019d2d.js",
+    "service-worker.js": "/paymentwidget/service-worker.js",
+    "static/js/2.d4a562b3.chunk.js.LICENSE.txt": "/paymentwidget/static/js/2.d4a562b3.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4e9eb98e.js",
+    "static/js/2.d4a562b3.chunk.js",
+    "static/js/main.b27e53d5.chunk.js"
+  ]
+}
