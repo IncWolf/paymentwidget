@@ -2,12 +2,17 @@ import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import styled from 'styled-components';
 import Radio from '@material-ui/core/Radio';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 const Wrapper = styled.div`
     margin: 20px 0;
+    position: relative;
+`
+
+const List = styled.div`
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    flex-wrap: nowrap;
+    overflow-y: auto;
 `
 
 const Alert = styled.div`
@@ -20,10 +25,9 @@ const Alert = styled.div`
 const PaymentMethodWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    width: 160px;
-    border: 2px solid #3f51b5;
+    border: 2px solid #a9a9a9;
     border-radius: 20px;
-    margin: 10px 0;
+    margin: 10px 5px;
     height: 80px;
     align-items: center;
     justify-content: center;
@@ -34,11 +38,18 @@ const PaymentMethodLabel = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 135px;
 
     & > span {
         font-weight: bold;
         font-size: 16px;
     }
+`
+
+const Label = styled(FormHelperText)`
+    position: absolute;
+    top: -12px;
+    left: 0;
 `
 
 const PaymentMethod = ({ isLoading, paymentMethods, selectedMethod, onChangeMethod }) => {
@@ -77,7 +88,11 @@ const PaymentMethod = ({ isLoading, paymentMethods, selectedMethod, onChangeMeth
     if (paymentMethods) {
         return (
             <Wrapper>
-                { paymentMethods.map(method => renderPaymentMethod(method, selectedMethod, onChangeMethod))}
+                <Label>Payment method</Label>
+                <List>
+                    { paymentMethods.map(method => renderPaymentMethod(method, selectedMethod, onChangeMethod))}
+                </List>
+                <FormHelperText>Please choose your payment method</FormHelperText>
             </Wrapper>
         )
     }

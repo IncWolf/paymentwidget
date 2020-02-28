@@ -60,7 +60,6 @@ const PaymentWidget = ({ amount }) => {
                         native: true,
                     }}
                     helperText="Please select your country"
-                    variant="outlined"
                 >
                     { countryCodes.map(country => <option key={country.code} value={country.code}>{country.name}</option>) }
                 </TextField>    
