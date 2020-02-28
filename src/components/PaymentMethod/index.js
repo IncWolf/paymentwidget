@@ -1,12 +1,17 @@
-import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import styled from 'styled-components';
-import Radio from '@material-ui/core/Radio';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import React from 'react'
+import PropTypes from 'prop-types'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import styled from 'styled-components'
+import Radio from '@material-ui/core/Radio'
+import FormHelperText from '@material-ui/core/FormHelperText'
 
 const Wrapper = styled.div`
-    margin: 20px 0;
+    margin: 32px 0;
     position: relative;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 `
 
 const List = styled.div`
@@ -52,14 +57,17 @@ const Label = styled(FormHelperText)`
     left: 0;
 `
 
+const StyledCircularProgress = styled(CircularProgress)`
+    margin: 0 auto;
+`
+
 const PaymentMethod = ({ isLoading, paymentMethods, selectedMethod, onChangeMethod }) => {
     const renderPaymentMethod = (method, selectedMethod, onChange) => {
         return (
-            <PaymentMethodWrapper key={method.id} onClick={onChange(method.id)}>
+            <PaymentMethodWrapper key={method.id} onClick={onChange(method)}>
                 <Radio
                     color="primary"
-                    checked={selectedMethod === method.id}
-                    value={method.id}
+                    checked={selectedMethod.value && selectedMethod.value.id === method.id}
                     name={`radio-button-${method.id}`}
                     inputProps={{ 'aria-label': method.id }}
                 />
@@ -72,7 +80,7 @@ const PaymentMethod = ({ isLoading, paymentMethods, selectedMethod, onChangeMeth
     }
 
     if (isLoading) {
-        return (<Wrapper><CircularProgress /></Wrapper>)
+        return (<Wrapper><StyledCircularProgress /></Wrapper>)
     }
 
     if (!isLoading && paymentMethods && paymentMethods.length === 0) {
@@ -88,16 +96,25 @@ const PaymentMethod = ({ isLoading, paymentMethods, selectedMethod, onChangeMeth
     if (paymentMethods) {
         return (
             <Wrapper>
-                <Label>Payment method</Label>
-                <List>
-                    { paymentMethods.map(method => renderPaymentMethod(method, selectedMethod, onChangeMethod))}
-                </List>
-                <FormHelperText>Please choose your payment method</FormHelperText>
+                <Label error={selectedMethod.error}>Payment method *</Label>
+                <div>
+                    <List>
+                        { paymentMethods.map(method => renderPaymentMethod(method, selectedMethod, onChangeMethod))}
+                    </List>
+                </div>
+                <FormHelperText error={selectedMethod.error}>Please choose your payment method</FormHelperText>
             </Wrapper>
         )
     }
     
     return null
+}
+
+PaymentMethod.propTypes = {
+    isLoading: PropTypes.bool,
+    onChangeMethod: PropTypes.func,
+    paymentMethods: PropTypes.array,
+    selectedMethod: PropTypes.object,
 }
 
 export default PaymentMethod;
