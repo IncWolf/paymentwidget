@@ -44,24 +44,31 @@ const PaymentWidgetContainer = ({ amount, currency }) => {
     async function getCountry(countryCode) {
         setPaymentMethodsLoadingStatus(true)
         setPaymentMethods(null)
-        const res = await fetch(`https://api.paymentwall.com/api/payment-systems/?key=b1ace6cb384e25a222a0da24e62167a1&country_code=${countryCode}`)
-        if (res.ok) {
-            const data = await res.json()
-            setPaymentMethods(data ? data : [])
-        } else {
+        try {
+            const res = await fetch(`https://api.paymentwall.com/api/payment-systems/?key=b1ace6cb384e25a222a0da24e62167a1&country_code=${countryCode}`)
+            if (res.ok) {
+                const data = await res.json()
+                setPaymentMethods(data ? data : [])
+            } else {
+                setPaymentMethods([])
+            }
+        } catch {
             setPaymentMethods([])
+        } finally {
+            setPaymentMethodsLoadingStatus(false)
         }
-        setPaymentMethodsLoadingStatus(false)
     }
 
     async function getCountryCode() {
         setCountryCodeLoadingStatus(true)
-        const geolocation = await fetch(`http://ip-api.com/json`)
-        if (geolocation.ok) {
-            const geoData = await geolocation.json()
-            setCountry(geoData.countryCode)
+        try {
+            const geolocation = await fetch(`http://ip-api.com/json`)
+            if (geolocation.ok) {
+                await geolocation.json().then(geoData => setCountry(geoData.countryCode))
+            }
+        } finally {
+            setCountryCodeLoadingStatus(false)
         }
-        setCountryCodeLoadingStatus(false)
     }
 
     return (
