@@ -7,6 +7,8 @@ import PropTypes from 'prop-types'
 import countryCodes from '../../country_codes.json'
 import PaymentMethod from '../PaymentMethod'
 import PaymentCard from '../../containers/PaymentCard'
+import SuccessfulMessage from '../SuccessfulMessage'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const StyledContainer = styled(Container)`
     text-align: center;
@@ -23,13 +25,37 @@ const StyledPaper = styled(Paper)`
 
 const PaymentWidget = ({
     selectedCountry,
-    price, onCountryChange,
+    price,
+    onCountryChange,
     isPaymentMethodsLoading,
+    isWidgetLoading,
     paymentMethods,
     onChangeMethod,
     selectedMethod,
-    onSubmitForm
-}) => (
+    onSubmitForm,
+    successfulObject,
+}) => {
+    if (isWidgetLoading) {
+        return (
+            <StyledContainer maxWidth="xs">
+                <StyledPaper>
+                    <CircularProgress />
+                </StyledPaper>
+            </StyledContainer>
+        )
+    }
+
+    if (successfulObject) {
+        return (
+            <StyledContainer maxWidth="xs">
+                <StyledPaper>
+                    <SuccessfulMessage data={successfulObject} />
+                </StyledPaper>
+            </StyledContainer>
+        )
+    }
+
+    return (
         <StyledContainer maxWidth="xs">
             <StyledPaper>
                 <h1>Payment Test Task</h1>
@@ -60,9 +86,11 @@ const PaymentWidget = ({
             </StyledPaper>
         </StyledContainer>
     )
+}
 
 PaymentWidget.propTypes = {
     isPaymentMethodsLoading: PropTypes.bool,
+    isWidgetLoading: PropTypes.bool,
     onChangeMethod: PropTypes.func,
     onCountryChange: PropTypes.func,
     onSubmitForm: PropTypes.func,
@@ -70,6 +98,7 @@ PaymentWidget.propTypes = {
     price: PropTypes.string,
     selectedCountry: PropTypes.string,
     selectedMethod: PropTypes.object,
+    successfulObject: PropTypes.object,
 }
 
 export default PaymentWidget;

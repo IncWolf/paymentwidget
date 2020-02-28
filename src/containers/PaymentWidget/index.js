@@ -6,10 +6,16 @@ const PaymentWidgetContainer = ({ amount, currency }) => {
     const [selectedCountry, setCountry] = useState('UA')
     const [isPaymentMethodsLoading, setPaymentMethodsLoadingStatus] = useState(false)
     const [paymentMethods, setPaymentMethods] = useState(null)
+    const [successfulObject, setSuccessfulObject] = useState(null)
+    const [isCountryCodeLoading, setCountryCodeLoadingStatus] = useState(false)
     const [selectedMethod, setSelectedMethod] = useState({
         value: null,
         error: null
     })
+    
+    useEffect(() => {
+        getCountryCode()
+    }, [])
 
     useEffect(() => {
         getCountry(selectedCountry)
@@ -30,6 +36,8 @@ const PaymentWidgetContainer = ({ amount, currency }) => {
     const handleSubmitForm = (card) => {
         if (!selectedMethod.value) {
             setSelectedMethod({ ...selectedMethod, error: true })
+        } else {
+            setSuccessfulObject({...card, method: selectedMethod.value.name, countryCode: selectedCountry })
         }
     }
 
@@ -46,9 +54,20 @@ const PaymentWidgetContainer = ({ amount, currency }) => {
         setPaymentMethodsLoadingStatus(false)
     }
 
+    async function getCountryCode() {
+        setCountryCodeLoadingStatus(true)
+        const geolocation = await fetch(`http://ip-api.com/json`)
+        if (geolocation.ok) {
+            const geoData = await geolocation.json()
+            setCountry(geoData.countryCode)
+        }
+        setCountryCodeLoadingStatus(false)
+    }
+
     return (
         <PaymentWidget
             isPaymentMethodsLoading={isPaymentMethodsLoading}
+            isWidgetLoading={isCountryCodeLoading}
             onChangeMethod={handleChangeMethod}
             onCountryChange={handleCountryChange}
             onSubmitForm={handleSubmitForm}
@@ -56,6 +75,7 @@ const PaymentWidgetContainer = ({ amount, currency }) => {
             price={`${amount} ${currency}`}
             selectedCountry={selectedCountry}
             selectedMethod={selectedMethod}
+            successfulObject={successfulObject}
         />
     )
 }

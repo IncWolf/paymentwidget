@@ -23,8 +23,9 @@ const List = styled.div`
 const Alert = styled.div`
     border-left: 3px solid red;
     background: rgba(255, 0, 0, .4);
-    padding: 10px 0px 10px 30px;
+    padding: 30px;
     text-align: left;
+    font-size: 16px;
 `
 
 const PaymentMethodWrapper = styled.div`
@@ -67,7 +68,8 @@ const PaymentMethod = ({ isLoading, paymentMethods, selectedMethod, onChangeMeth
             <PaymentMethodWrapper key={method.id} onClick={onChange(method)}>
                 <Radio
                     color="primary"
-                    checked={selectedMethod.value && selectedMethod.value.id === method.id}
+                    checked={selectedMethod.value !== null && selectedMethod.value.id === method.id}
+                    value={method.id}
                     name={`radio-button-${method.id}`}
                     inputProps={{ 'aria-label': method.id }}
                 />
